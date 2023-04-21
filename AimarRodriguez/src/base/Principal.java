@@ -4,6 +4,10 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Principal {
+	/**
+	 * @author Aimar Rodriguez
+	 * @version 1.0
+	 */
 	private static final Logger LOGGER = Logger.getLogger(Principal.class.getName());
 
 	private static Scanner teclado = new Scanner(System.in);
@@ -15,7 +19,7 @@ public class Principal {
 	public static void main(String[] args) {
 
 		System.out.println(
-				"Este programa lee el nivel de agua de una presa y permite abrir compuertas si tenemos permiso (el nivel es superior a 50) y las compuertas están verificadas.");
+				"Este programa lee el nivel de agua de una presa y permite abrir compuertas si tenemos permiso (el nivel es superior a 50) y las compuertas estï¿½n verificadas.");
 
 		int nivel = leerNivelAgua();
 
@@ -37,7 +41,7 @@ public class Principal {
 			System.out.println("	4. Verificar compuertas. Estado: " + (compuertasVerificadas ? "VERIFICADAS" : "NO VERIFICADAS"));
 			System.out.println("5. Salir");
 			System.out.println();
-			System.out.print("Introduce opción: ");
+			System.out.print("Introduce opciï¿½n: ");
 			opcion = teclado.nextInt();
 			switch (opcion) {
 			case 1:
@@ -48,7 +52,7 @@ public class Principal {
 			case 2:
 				if(abrirCompuertas()) {
 					System.out.println();
-					System.out.print("¡Compuertas abiertas!");
+					System.out.print("ï¿½Compuertas abiertas!");
 				}else {
 					System.out.println();
 					System.out.print("No se cumplen las condiciones para abrir compuertas.");
@@ -65,7 +69,7 @@ public class Principal {
 				compuertasVerificadas = verificarCompuertas();
 				if(compuertasVerificadas) {
 					System.out.println();
-					System.out.print("¡Compuertas verificadas!");
+					System.out.print("ï¿½Compuertas verificadas!");
 				}
 				break;
 			default:
@@ -86,7 +90,12 @@ public class Principal {
 			return false;
 		}
 	}
-	
+	/**
+	 * Si el parametro recibido es mayor a 50 devuelve un boolean true, si el parametro recibido es menor a 50 devuelve un boolean false
+	 * @author Aimar Rodriguez
+	 * @param nivel el nivel generado en el metodo leerNivelAgua()
+	 * @return devuelve un booleano dependiendo de si el parametro recibido es mayor a 50 o no
+	 */
 	static boolean solicitarPermiso(int nivel) {
 		if (nivel > 50) {
 			return true;
