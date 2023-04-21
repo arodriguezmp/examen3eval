@@ -1,7 +1,10 @@
 package base;
 
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Principal {
 	/**
@@ -11,13 +14,13 @@ public class Principal {
 	private static final Logger LOGGER = Logger.getLogger(Principal.class.getName());
 
 	private static Scanner teclado = new Scanner(System.in);
-	
+
 	private static boolean permiso = false;
-	
+
 	private static boolean compuertasVerificadas = false;
 
 	public static void main(String[] args) {
-
+		
 		System.out.println(
 				"Este programa lee el nivel de agua de una presa y permite abrir compuertas si tenemos permiso (el nivel es superior a 50) y las compuertas est�n verificadas.");
 
@@ -28,6 +31,17 @@ public class Principal {
 	}
 
 	private static void mostrarMenu(int nivel) {
+		LOGGER.setUseParentHandlers(false);
+		FileHandler fileHandler = null;
+		try {
+			fileHandler = new FileHandler("./logs/seleccione.log", true);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "Ocurrió una Excepcion.", e);
+		}
+		LOGGER.addHandler(fileHandler);
+		fileHandler.setLevel(Level.FINE);
+		LOGGER.setLevel(Level.FINE);
+			
 		int opcion = 0;
 		do {
 			System.out.println();
@@ -38,11 +52,14 @@ public class Principal {
 			System.out.println("1. Nueva lectura del nivel de agua.");
 			System.out.println("2. Abrir compuertas. Requiere:");
 			System.out.println("	3. Solicitar permiso. Estado: " + (permiso ? "CONCEDIDO" : "NO CONCEDIDO"));
-			System.out.println("	4. Verificar compuertas. Estado: " + (compuertasVerificadas ? "VERIFICADAS" : "NO VERIFICADAS"));
+			System.out.println("	4. Verificar compuertas. Estado: "
+					+ (compuertasVerificadas ? "VERIFICADAS" : "NO VERIFICADAS"));
 			System.out.println("5. Salir");
 			System.out.println();
 			System.out.print("Introduce opci�n: ");
 			opcion = teclado.nextInt();
+			LOGGER.log(Level.FINE,"El usuario a seleccionado: " + opcion);
+
 			switch (opcion) {
 			case 1:
 				nivel = leerNivelAgua();
@@ -50,24 +67,24 @@ public class Principal {
 				compuertasVerificadas = false;
 				break;
 			case 2:
-				if(abrirCompuertas()) {
+				if (abrirCompuertas()) {
 					System.out.println();
 					System.out.print("�Compuertas abiertas!");
-				}else {
+				} else {
 					System.out.println();
 					System.out.print("No se cumplen las condiciones para abrir compuertas.");
 				}
 				break;
 			case 3:
 				permiso = solicitarPermiso(nivel);
-				if(!permiso) {
+				if (!permiso) {
 					System.out.println();
 					System.out.print("El permiso solamente se concede si el nivel del agua es superior a 50.");
 				}
-				break;	
+				break;
 			case 4:
 				compuertasVerificadas = verificarCompuertas();
-				if(compuertasVerificadas) {
+				if (compuertasVerificadas) {
 					System.out.println();
 					System.out.print("�Compuertas verificadas!");
 				}
@@ -76,6 +93,8 @@ public class Principal {
 				break;
 			}
 		} while (opcion != 5);
+		
+		
 	}
 
 	static int leerNivelAgua() {
@@ -86,24 +105,29 @@ public class Principal {
 	static boolean abrirCompuertas() {
 		if (permiso && compuertasVerificadas) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
+
 	/**
-	 * Si el parametro recibido es mayor a 50 devuelve un boolean true, si el parametro recibido es menor a 50 devuelve un boolean false
+	 * Si el parametro recibido es mayor a 50 devuelve un boolean true, si el
+	 * parametro recibido es menor a 50 devuelve un boolean false
+	 * 
 	 * @author Aimar Rodriguez
 	 * @param nivel el nivel generado en el metodo leerNivelAgua()
-	 * @return devuelve un booleano dependiendo de si el parametro recibido es mayor a 50 o no
+	 * @return devuelve un booleano dependiendo de si el parametro recibido es mayor
+	 *         a 50 o no
 	 */
-	static boolean solicitarPermiso(int nivel) {
+	public static boolean solicitarPermiso(int nivel) {
 		if (nivel > 50) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	static boolean verificarCompuertas() {		
+
+	static boolean verificarCompuertas() {
 		return true;
 	}
 
